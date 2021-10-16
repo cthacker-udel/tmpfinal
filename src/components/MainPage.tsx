@@ -6,6 +6,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { CourseContainer } from './CourseContainer';
 
 export const MainPage = (): JSX.Element =>
+
 	<DragDropContext
 		onBeforeCapture={() => console.log('before capture')}
 		onBeforeDragStart={() => console.log('before drag start')}
