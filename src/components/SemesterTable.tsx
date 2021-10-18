@@ -18,12 +18,12 @@ export const getSemesterStr = (semesterNum: number): string => {
 };
 
 export const SemesterTable = (): JSX.Element => {
-	const [semesters, setSemesters] = useState<number>(4);
+	const [semesters, setSemesters] = useState<number>(1);
 	return (
 		<Droppable droppableId="semester-table">
 			{(prov: DroppableProvided) => (
 
-				<Table {...prov.droppableProps} ref={prov.innerRef} >
+				<Table >
 					<thead>
 						<tr>
 							{new Array(semesters).fill(0).map((e, i) => <th key={i}>{`${getSemesterStr(i + 1)} semester`}</th>)}
@@ -31,10 +31,9 @@ export const SemesterTable = (): JSX.Element => {
 					</thead>
 					<tbody>
 						<tr>
-							<td>this</td>
-							<td>th</td>
-							<td>a</td>
-							<td>table</td>
+							{
+								new Array(semesters).fill(0).map(e => <td {...prov.droppableProps} ref={prov.innerRef} >{prov.placeholder}</td>)
+							}
 						</tr>
 					</tbody>
 				</Table>

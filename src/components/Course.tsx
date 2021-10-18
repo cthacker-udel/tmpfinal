@@ -1,7 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Draggable } from 'react-beautiful-dnd';
 import React from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, OverlayTrigger, Popover } from 'react-bootstrap';
+
 
 export const Course = (props: { name: string, ind: number }): JSX.Element =>
 	<>
