@@ -10,23 +10,11 @@ import { CourseType } from '../interfaces/course';
 
 export const MainPage = (): JSX.Element => {
 	const [courses, setCourses] = useState<CourseType[]>(COURSES as CourseType[]);
-	const onBeforeCapture = useCallback(() => {
-		console.log('before capture');
-	}, []);
-
-	const onBeforeDragStart = useCallback(() => {
-		console.log('before drag start');
-	}, []);
-
-	const onDragStart = useCallback(() => {
-		console.log('on drag start');
-	}, []);
-
-	const onDragUpdate = useCallback(() => {
-		console.log('on drag update');
-	}, []);
 
 	const onDragEnd = (result: DropResult) => {
+		if (!result.destination) {
+			return;
+		}
 		console.log(result);
 		const theCourses = courses;
 		const theCourse = theCourses.splice(result.source.index, 1)[0];
@@ -40,10 +28,6 @@ export const MainPage = (): JSX.Element => {
 		<>
 			<CourseContext.Provider value={courses}>
 				<DragDropContext
-					onBeforeCapture={onBeforeCapture}
-					onBeforeDragStart={onBeforeDragStart}
-					onDragStart={onDragStart}
-					onDragUpdate={onDragUpdate}
 					onDragEnd={onDragEnd}
 				>
 					<Container>
