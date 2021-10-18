@@ -10,6 +10,7 @@ import { CourseType } from '../interfaces/course';
 
 export const MainPage = (): JSX.Element => {
 	const [courses, setCourses] = useState<CourseType[]>(COURSES as CourseType[]);
+	const [selectedCourses, setSelectedCourses] = useState<string>('');
 
 	const onDragEnd = (result: DropResult) => {
 		if (!result.destination) {
