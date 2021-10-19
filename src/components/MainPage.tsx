@@ -12,6 +12,11 @@ export const MainPage = (): JSX.Element => {
 	const [courses, setCourses] = useState<CourseType[]>(COURSES as CourseType[]);
 	const [selectedCourses, setSelectedCourses] = useState<string>('');
 
+	const onDelete = (event: number) => {
+		// get name and remove from courses
+		console.log('deleting button');
+	};
+
 	const onDragEnd = (result: DropResult) => {
 		if (!result.destination) {
 			return;
@@ -51,7 +56,7 @@ export const MainPage = (): JSX.Element => {
 						</Row>
 						<Row>
 							<Col>
-								<CourseContainer />
+								<CourseContainer deleteFunc={onDelete}/>
 							</Col>
 							<Col>
 								<SemesterTable />
