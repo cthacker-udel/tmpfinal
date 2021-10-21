@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ListGroup } from 'react-bootstrap';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Course } from './Course';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { CourseContext } from '../context/CourseContext';
 
-export const CourseContainer = (props: { deleteFunc: (arg: number) => void}): JSX.Element =>
+export const CourseContainer = (props: { deleteFunc: (arg: string) => void}): JSX.Element =>
 	<>
 		<CourseContext.Consumer>
 			{value =>

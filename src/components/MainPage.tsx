@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import { SemesterTable } from './SemesterTable';
-import React, { useCallback, useState } from 'react';
+import React, { MouseEvent, MouseEventHandler, useCallback, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { CourseContainer } from './CourseContainer';
 import { CourseContext } from '../context/CourseContext';
@@ -11,10 +11,16 @@ import { CourseType } from '../interfaces/course';
 export const MainPage = (): JSX.Element => {
 	const [courses, setCourses] = useState<CourseType[]>(COURSES as CourseType[]);
 	const [selectedCourses, setSelectedCourses] = useState<string>('');
+	const [deletedCourses, setDeletedCourses] = useState<CourseType[]>([]);
 
-	const onDelete = (event: number) => {
+	const onDelete = (name: string) => {
 		// get name and remove from courses
-		console.log('deleting button');
+		const ind = courses.map((e, i) => e.name === name ? i : -1).filter(e => e !== -1)[0];
+		const theCourses = courses;
+		const course = theCourses.splice(ind, 1)[0];
+		const delCourses = [...deletedCourses, course];
+		setDeletedCourses(delCourses);
+		setCourses(theCourses);
 	};
 
 	const onDragEnd = (result: DropResult) => {
