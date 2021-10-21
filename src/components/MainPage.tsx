@@ -7,21 +7,12 @@ import { CourseContainer } from './CourseContainer';
 import { CourseContext } from '../context/CourseContext';
 import COURSES from '../json/courses.json';
 import { CourseType } from '../interfaces/course';
+import { SemesterCourseContext } from '../context/SemesterCourseContext';
 
 export const MainPage = (): JSX.Element => {
 	const [courses, setCourses] = useState<CourseType[]>(COURSES as CourseType[]);
 	const [selectedCourses, setSelectedCourses] = useState<string>('');
-	const [deletedCourses, setDeletedCourses] = useState<CourseType[]>([]);
-
-	const onDelete = (name: string) => {
-		// get name and remove from courses
-		const ind = courses.map((e, i) => e.name === name ? i : -1).filter(e => e !== -1)[0];
-		const theCourses = courses;
-		const course = theCourses.splice(ind, 1)[0];
-		const delCourses = [...deletedCourses, course];
-		setDeletedCourses(delCourses);
-		setCourses(theCourses);
-	};
+	const [semesterCourses, setSemesterCourses] = useState<CourseType[]>([]);
 
 	const onDragEnd = (result: DropResult) => {
 		if (!result.destination) {
@@ -30,46 +21,53 @@ export const MainPage = (): JSX.Element => {
 		console.log(result);
 		const theCourses = courses;
 		const theCourse = theCourses.splice(result.source.index, 1)[0];
-		if (result.destination !== undefined) {
+		if (result.destination.droppableId === 'coursecontainer') {
 			theCourses.splice(result.destination?.index, 0, theCourse);
+			setCourses(theCourses);
+		} else if (result.destination.droppableId === 'semester-table') {
+			const tmpSemesterCourses = [...semesterCourses, theCourse];
+			setSemesterCourses(tmpSemesterCourses);
+			setCourses(theCourses);
+			console.log('running proper func');
 		}
-		setCourses(theCourses);
 	};
 
 	return (
 		<>
 			<CourseContext.Provider value={courses}>
-				<DragDropContext
-					onDragEnd={onDragEnd}
-				>
-					<Container>
-						<Row>
-							<Col>
-								Course Scheduler
-							</Col>
-							<Col>
-								<Row>
-									<Col>
-										{/* concentration list */}
-									</Col>
-								</Row>
-								<Row>
-									<Col>
-										{/* reqs */}
-									</Col>
-								</Row>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<CourseContainer deleteFunc={onDelete}/>
-							</Col>
-							<Col>
-								<SemesterTable />
-							</Col>
-						</Row>
-					</Container>
-				</DragDropContext>
+				<SemesterCourseContext.Provider value={semesterCourses}>
+					<DragDropContext
+						onDragEnd={onDragEnd}
+					>
+						<Container>
+							<Row>
+								<Col>
+									Course Scheduler
+								</Col>
+								<Col>
+									<Row>
+										<Col>
+											{/* concentration list */}
+										</Col>
+									</Row>
+									<Row>
+										<Col>
+											{/* reqs */}
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+							<Row>
+								<Col>
+									<CourseContainer />
+								</Col>
+								<Col>
+									<SemesterTable />
+								</Col>
+							</Row>
+						</Container>
+					</DragDropContext>
+				</SemesterCourseContext.Provider>
 			</CourseContext.Provider>
 		</>
 	);
